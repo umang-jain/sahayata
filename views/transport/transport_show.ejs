@@ -1,0 +1,39 @@
+<% include ../partials/header.ejs %>
+
+<div class="container">
+  <div class="row" id='content_main'>
+    <div class="col-md-3">
+      <p class="lead">Sahayata</p>
+      <div class="list-group">
+        <li class="list-group-item active">Info 1</li>
+        <li class="list-group-item">Info 2</li>
+        <li class="list-group-item">Info 3</li>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div>
+        <div><%= tranport.name %></div>
+        <div><%= tranport.owner %></div>
+        <div><%= tranport.contact %></div>
+        <div><%= tranport.location %></div>
+      </div>
+      <div class="card bg-light mb-3">
+        <div class="text-right">
+          <a href="/sahayata/transport/<%= transport._id %>/vehicle/new" class="btn btn-info">Add New Vehicle</a>
+        </div>
+        <hr>
+        <%   transport.vehicles.forEach(function(vehicle){ %>
+        <div class="row">
+          <div class="col-md-12">
+            <strong><%= vehicle.name %></strong>
+            <p>Rs. <%= vehicle.price %></p>
+            <p>Rs. <%= vehicle.capacity %></p>
+            <p>Rs. <%= vehicle.vahicleNumber %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer.ejs %>

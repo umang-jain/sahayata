@@ -1,0 +1,30 @@
+<% include ../partials/header %>
+
+<div class="container text-center" id="formnew">
+
+         <h1>Vehicle Data</h1>
+          <form action="/sahayata/transport" method="post">
+              <div class="form-row">
+                  <div class="form-group col-md-4">
+                      <label for="name">Vehicle Name</label>
+                      <input class="form-control form-control-sm" id="name" type="text" placeholder="Name" name="vehicle[name]">
+                  </div>
+                  <div class="form-group col-md-4">
+                      <label for="location">Vehicle Number</label>
+                      <input class="form-control form-control-sm" id="location" type="text" placeholder="Location" name="vehicle[vehicleNumber]">
+                  </div>
+                  <div class="form-group col-md-4">
+                      <label for="owner">Capacity</label>
+                      <input class="form-control form-control-sm" id="owner" type="text" placeholder="Owner" name="vehicle[capacity]">
+                  </div>
+                  <div class="form-group col-md-4">
+                      <label for="contact">Price</label>
+                      <input class="form-control form-control-sm" id="contact" type="text" placeholder="Contact" name="vehicle[price]">
+                  </div>
+                </div>
+                <button type="submit" name="button">Submit</button>
+          </form>
+</div>
+
+
+<% include ../partials/footer %>
