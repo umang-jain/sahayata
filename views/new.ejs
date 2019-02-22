@@ -1,0 +1,38 @@
+<% include ./partials/header %>
+
+<div class="container text-center" id="formnew">
+
+         <h1>Farmer Data</h1>
+          <form action="/sahayata" method="post">
+              <div class="form-row">
+                  <div class="form-group col-md-4">
+                      <label for="name">Name</label>
+                      <input class="form-control form-control-sm" id="name" type="text" placeholder="Name" name="farmer[name]">
+                  </div>
+                  <div class="form-group col-md-4">
+                      <label for="age">Sex</label>
+                      <input class="form-control form-control-sm" id="age" type="text" placeholder="Age" name="farmer[sex]">
+                  </div>
+                  <div class="form-group col-md-4">
+                      <label for="age">Location</label>
+                      <input class="form-control form-control-sm" id="age" type="text" placeholder="Age" name="farmer[location]">
+                  </div>
+                  <div class="form-group col-md-4">
+                      <label for="age">State</label>
+                      <input class="form-control form-control-sm" id="age" type="text" placeholder="Age" name="farmer[state]">
+                  </div>
+                  <div class="form-group col-md-4">
+                      <label for="age">City</label>
+                      <input class="form-control form-control-sm" id="age" type="text" placeholder="Age" name="farmer[city]">
+                  </div>
+                  <div class="form-group col-md-4">
+                      <label for="lastCrop">Last Crop</label>
+                      <input class="form-control form-control-sm" id="lastCrop" type="text" name="farmer[lastCrop]">
+                  </div>
+                </div>
+                <button type="submit" name="button">Submit</button>
+          </form>
+</div>
+
+
+<% include ./partials/footer %>
