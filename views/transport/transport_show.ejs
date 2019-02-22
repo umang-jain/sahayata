@@ -12,10 +12,10 @@
     </div>
     <div class="col-md-9">
       <div>
-        <div><%= tranport.name %></div>
-        <div><%= tranport.owner %></div>
-        <div><%= tranport.contact %></div>
-        <div><%= tranport.location %></div>
+        <div>Name : <%= transport.name %></div>
+        <div>Owner : <%= transport.owner %></div>
+        <div>Contact : <%= transport.contact %></div>
+        <div>Location : <%= transport.location %></div>
       </div>
       <div class="card bg-light mb-3">
         <div class="text-right">
@@ -25,12 +25,13 @@
         <%   transport.vehicles.forEach(function(vehicle){ %>
         <div class="row">
           <div class="col-md-12">
-            <strong><%= vehicle.name %></strong>
-            <p>Rs. <%= vehicle.price %></p>
-            <p>Rs. <%= vehicle.capacity %></p>
-            <p>Rs. <%= vehicle.vahicleNumber %></p>
+            <strong> Name : <%= vehicle.name %></strong>
+            <p>Price : <%= vehicle.price %></p>
+            <p>Capacity : <%= vehicle.capacity %></p>
+            <p>Vehicle Number : <%= vehicle.vehicleNumber %></p>
           </div>
         </div>
+        <% }) %>
       </div>
     </div>
   </div>

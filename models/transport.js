@@ -8,7 +8,7 @@ var transportSchema = new mongoose.Schema({
     vehicles:[
             {
                 type:mongoose.Schema.Types.ObjectId,
-                ref: "vehicle"
+                ref: "Vehicle"
             }
         ]
 });

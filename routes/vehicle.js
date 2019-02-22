@@ -12,7 +12,7 @@ router.get("/sahayata/transport/:id/vehicle/new",function(req,res){
           console.log(err);
           res.redirect('/');
         }else{
-          res.render("transport/transport_new",{transport});
+          res.render("vehicle/vehicle_new",{transport});
         }
       });
 
@@ -30,7 +30,7 @@ router.post('/sahayata/transport/:id/vehicle', (req,res) => {
             }else{
               transport.vehicles.push(vehicle);
               transport.save();
-              res.redirect('/sahayata/transport/:id/'+req.params.id)
+              res.redirect('/sahayata/transport/'+req.params.id)
             }
           });
         }

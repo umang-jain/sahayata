@@ -28,7 +28,27 @@ app.use(methodoverride("_method"));
 
 mongoose.connect("mongodb://localhost/sahayata", { useNewUrlParser: true });
 
-//----------- ROUTES --------------
+//----------- PASSPORT CONFIG ----------
+
+// app.use(require('express-session')({
+//   secret : 'Hello there this is a secret!',
+//   resave: false,
+//   saveUninitialized:false
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session());
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+//
+// app.use((req,res,next) => {
+//   res.locals.currentUser = req.user;
+//   res.locals.error = req.flash("error");
+//   res.locals.success = req.flash("success");
+//   next();
+// });
+
+//----------- ROUTES -------------------
 
 app.use(farmerRoutes);
 app.use(storageRoutes);

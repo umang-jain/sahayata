@@ -2,8 +2,8 @@
 
 <div class="container text-center" id="formnew">
 
-         <h1>Vehicle Data</h1>
-          <form action="/sahayata/transport" method="post">
+         <h1>Vehicle Data For <%= transport.name %></h1>
+          <form action="/sahayata/transport/<%= transport._id %>/vehicle" method="post">
               <div class="form-row">
                   <div class="form-group col-md-4">
                       <label for="name">Vehicle Name</label>

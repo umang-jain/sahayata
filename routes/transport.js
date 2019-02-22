@@ -13,14 +13,12 @@ router.get("/sahayata/transport/new",function(req,res){
        res.render("transport/transport_new");
 });
 router.post("/sahayata/transport",function(req,res){
-        Transport.create(req.body.transport,function(err,transport){
-           if(err){
-               console.log(err);
-               res.render("home");
-           }else{
+        Transport.create(req.body.transport).then((transport) => {
                res.redirect("/sahayata/transport");
-           }
-        });
+           },(err) => {
+             console.log(err);
+             res.redirect('/')
+           });
 });
 router.get("/sahayata/transport/:id",function(req,res){
         Transport.findById(req.params.id).populate("vehicles").exec(function(err,transport){
@@ -29,7 +27,7 @@ router.get("/sahayata/transport/:id",function(req,res){
                     res.redirect('/');
                 }
                 else{
-                    res.render("tranport/transport_show",{transport})
+                    res.render("transport/transport_show",{transport})
                 }
             });
 });
