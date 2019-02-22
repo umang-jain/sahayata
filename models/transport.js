@@ -5,7 +5,12 @@ var transportSchema = new mongoose.Schema({
     location:String,
     owner:String,
     contact:Number,
-    vehicle:Array
+    vehicles:[
+            {
+                type:mongoose.Schema.Types.ObjectId,
+                ref: "vehicle"
+            }
+        ]
 });
 
 module.exports=mongoose.model("Transport",transportSchema);
