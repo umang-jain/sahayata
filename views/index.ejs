@@ -1,0 +1,39 @@
+<% include ./partials/header %>
+
+
+<div class="container text-center" id="formnew">
+   <h1>New Fabric</h1>
+    <form action="/slj" method="post">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="name">Name</label>
+                <input class="form-control form-control-sm" id="name" type="text" placeholder="Name" name="cloth[name]">
+            </div>
+            <div class="form-group col-md-8">
+                <label for="image">Image</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Image URL" name="cloth[image]">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="price">Price</label>
+                <input class="form-control form-control-sm" id="price" type="number" placeholder="Price" name="cloth[price]">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="seller">Seller</label>
+                <input class="form-control form-control-sm" id="seller" type="text" placeholder="Seller" name="cloth[seller]">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="fabric">Fabric Type</label>
+                <input class="form-control form-control-sm" id="fabric" type="text" placeholder="Fabric Type" name="cloth[fabric]">
+            </div>
+        </div>
+        <div class="form-group form-row">
+            <label for="description">Description</label>
+            <textarea class="form-control form-control-sm" id="description" name="cloth[description]" placeholder="Description" cols="30" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-info" id="newsubmit">Submit</button>
+    </form>
+</div>
+
+<% include ./partials/footer %>
