@@ -26,7 +26,7 @@ app.use(express.static("public"));
 app.use(bodyparser.urlencoded({extended:true}));
 app.use(methodoverride("_method"));
 
-mongoose.connect("mongodb://localhost/sahayata", { useNewUrlParser: true });
+mongoose.connect("mongodb://admin:admin123@ds349045.mlab.com:49045/sahayata", { useNewUrlParser: true });
 
 //----------- PASSPORT CONFIG ----------
 
