@@ -4,6 +4,7 @@ var express                 = require("express"),
     Storage                 = require("../models/storage"),
     Transport               = require("../models/transport"),
     Vehicle                 = require("../models/vehicle"),
+    Crop                    = require("../models/crop"),
     User                    = require("../models/user");
 
 router.get("/sahayata/farmer",function(req,res){
@@ -21,7 +22,17 @@ router.post("/sahayata/farmer",function(req,res){
                res.redirect("/sahayata/farmer");
            }
         });
-    });
-
+});
+router.get("/sahayata/farmer/:id",function(req,res){
+        Farmer.findById(req.params.id).populate("crops").exec(function(err,farmer){
+                if(err){
+                    console.log(err);
+                    res.redirect('/');
+                }
+                else{
+                    res.render("farmer/farmer_show",{farmer})
+                }
+            });
+});
 
 module.exports = router;

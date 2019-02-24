@@ -6,7 +6,13 @@ var farmerSchema = new mongoose.Schema({
     location:String,
     state:String,
     city:String,
-    lastCrop:String
+    lastCrop:String,
+    crops:[
+            {
+                  type:mongoose.Schema.Types.ObjectId,
+                  ref: "Crop"
+            }
+    ]
 });
 
 module.exports = mongoose.model("Farmer",farmerSchema);
