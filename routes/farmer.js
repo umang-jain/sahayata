@@ -23,6 +23,8 @@ router.post("/sahayata/farmer",function(req,res){
            },(err) => {
              console.log(err);
              res.status(400).send(err);
+        }).catch((e) => {
+          res.status(400).send();
         });
 });
 router.get("/sahayata/farmer/:id",function(req,res){
@@ -32,7 +34,7 @@ router.get("/sahayata/farmer/:id",function(req,res){
           }
           res.send(JSON.stringify(farmer));
       }).catch((e) => {
-          res.status(400).send(e);
+          res.status(400).send();
       });
 });
 

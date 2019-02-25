@@ -26,7 +26,7 @@ app.use(express.static("public"));
 app.use(bodyparser.json());
 app.use(methodoverride("_method"));
 
-mongoose.connect("mongodb://admin:admin123@ds349045.mlab.com:49045/sahayata", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost:27017/sahayata", { useNewUrlParser: true });
 
 //----------- ROUTES -------------------
 
