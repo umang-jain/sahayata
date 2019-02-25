@@ -14,9 +14,7 @@ router.get("/sahayata/transport",function(req,res){
     res.status(400).send(err);
   });
 });
-// router.get("/sahayata/transport/new",function(req,res){
-//        res.render("transport/transport_new");
-// });
+
 router.post("/sahayata/transport",(req,res) => {
         Transport.create(req.body.transport).then((transport) => {
                res.send(JSON.stringify(transport));

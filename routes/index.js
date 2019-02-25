@@ -33,15 +33,15 @@ router.get('/search',(req,res) => {
               .then((response) => {
                   var geometry = response.data.results[0].geometry;
                   geoArray.push(geometry);
-                  console.log(geoArray);
-                  return geoArray;
                 })
                 .catch((err) => {
                   console.log(err);
                   res.status(400).send();
                 })
           })
+          return geoArray
         }).then((arr) => {
+          console.log(arr);
           res.send(arr);
         })
         .catch(function (err) {

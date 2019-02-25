@@ -14,9 +14,7 @@ router.get("/sahayata/farmer",function(req,res){
         res.status(400).send(err);
       });
     });
-// router.get("/sahayata/farmer/new",function(req,res){
-//        res.render("farmer/farmer_new");
-//     });
+    
 router.post("/sahayata/farmer",function(req,res){
         Farmer.create(req.body.farmer).then((farmer) => {
                res.send(JSON.stringify(farmer));
