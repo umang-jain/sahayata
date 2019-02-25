@@ -8,28 +8,31 @@ var express                 = require("express"),
     User                    = require("../models/user");
 
 router.get("/sahayata/transport",function(req,res){
-        res.render('transport/transport_index');
+  Transport.find().then((transports) => {
+    res.send(JSON.stringify(transports));
+  }, (err) => {
+    res.status(400).send(err);
+  });
 });
-router.get("/sahayata/transport/new",function(req,res){
-       res.render("transport/transport_new");
-});
-router.post("/sahayata/transport",function(req,res){
+// router.get("/sahayata/transport/new",function(req,res){
+//        res.render("transport/transport_new");
+// });
+router.post("/sahayata/transport",(req,res) => {
         Transport.create(req.body.transport).then((transport) => {
-               res.redirect("/sahayata/transport");
+               res.send(JSON.stringify(transport));
            },(err) => {
              console.log(err);
-             res.redirect('/')
+             res.status(400).send(err);
            });
 });
 router.get("/sahayata/transport/:id",function(req,res){
-        Transport.findById(req.params.id).populate("vehicles").exec(function(err,transport){
-                if(err){
-                    console.log(err);
-                    res.redirect('/');
+        Transport.findById(req.params.id).populate("vehicles").exec().then((transport) => {
+                if (!transport) {
+                  return res.status(404).send();
                 }
-                else{
-                    res.render("transport/transport_show",{transport})
-                }
+                res.send(JSON.stringify(transport));
+            }).catch((e) => {
+              res.status(400).send();
             });
 });
 

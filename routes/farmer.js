@@ -8,31 +8,32 @@ var express                 = require("express"),
     User                    = require("../models/user");
 
 router.get("/sahayata/farmer",function(req,res){
-        res.render('farmer/farmer_index');
+      Farmer.find().then((farmers) => {
+        res.send(JSON.stringify(farmers));
+      }, (err) => {
+        res.status(400).send(err);
+      });
     });
-router.get("/sahayata/farmer/new",function(req,res){
-       res.render("farmer/farmer_new");
-    });
+// router.get("/sahayata/farmer/new",function(req,res){
+//        res.render("farmer/farmer_new");
+//     });
 router.post("/sahayata/farmer",function(req,res){
-        Farmer.create(req.body.farmer,function(err,farmer){
-           if(err){
-               console.log(err);
-               res.render("home");
-           }else{
-               res.redirect("/sahayata/farmer");
-           }
+        Farmer.create(req.body.farmer).then((farmer) => {
+               res.send(JSON.stringify(farmer));
+           },(err) => {
+             console.log(err);
+             res.status(400).send(err);
         });
 });
 router.get("/sahayata/farmer/:id",function(req,res){
-        Farmer.findById(req.params.id).populate("crops").exec(function(err,farmer){
-                if(err){
-                    console.log(err);
-                    res.redirect('/');
-                }
-                else{
-                    res.render("farmer/farmer_show",{farmer})
-                }
-            });
+      Farmer.findById(req.params.id).populate("crops").exec().then((farmer) => {
+          if (!farmer) {
+              return res.status(404).send();
+          }
+          res.send(JSON.stringify(farmer));
+      }).catch((e) => {
+          res.status(400).send(e);
+      });
 });
 
 module.exports = router;
