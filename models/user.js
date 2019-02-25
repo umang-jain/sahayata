@@ -9,8 +9,8 @@ var UserSchema = new mongoose.Schema({
     type: String,
     minlength: 1,
     trim: true,
-    required: true,
-    unique: true
+    required: true
+    // unique: true
   },
   firstName: {
     type: String
@@ -31,11 +31,22 @@ var UserSchema = new mongoose.Schema({
   state: {
     type: String
   },
-  
   type: {
     type: String,
     required: true
   },
+  vehicles:[
+          {
+              type:mongoose.Schema.Types.ObjectId,
+              ref: "Vehicle"
+          }
+      ],
+  crops:[
+          {
+              type:mongoose.Schema.Types.ObjectId,
+              ref: "Crop"
+          }
+      ],
   tokens: [{
     access: {
       type: String,
