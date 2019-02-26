@@ -1,3 +1,5 @@
+const _                 = require('lodash');
+
 var express                 = require("express"),
     router                  = express.Router(),
     Farmer                  = require("../models/farmer"),
@@ -43,7 +45,8 @@ var express                 = require("express"),
     //adding crops
 
     router.post('/sahayata/farmer/:id', (req,res)=>{
-      Crop.create(req.body.crop).then(crop=>{
+        var body = _.pick(req.body,['type','quanity','price']);
+      Crop.create(body).then(crop=>{
         User.findById(req.params.id).then(user=>{
           user.crops.push(crop);
           user.save();

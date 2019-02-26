@@ -3,8 +3,8 @@ var mongoose=require("mongoose");
 var vehicleSchema = new mongoose.Schema({
     type : String,
     vehicleNumber : String,
-    capacity : Number,
-    price : Number
+    capacity : String,
+    price : String
 });
 
 module.exports = mongoose.model("Vehicle", vehicleSchema);

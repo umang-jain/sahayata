@@ -1,3 +1,5 @@
+const _                 = require('lodash');
+
 var express                 = require("express"),
     router                  = express.Router(),
     Farmer                  = require("../models/farmer"),
@@ -10,7 +12,8 @@ var express                 = require("express"),
 
 //------------ ADD Vehicle----------------
     router.post('/sahayata/transport/:id', (req,res)=>{
-       Vehicle.create(req.body.vehicle).then(vehicle=>{
+      var body = _.pick(req.body,['type','vehicleNumber','capacity','price']);
+       Vehicle.create(body).then(vehicle=>{
         User.findById(req.params.id).then(user=>{
           user.vehicles.push(vehicle);
           user.save();

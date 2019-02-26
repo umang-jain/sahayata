@@ -4,12 +4,12 @@ var warehouseSchema = new mongoose.Schema({
     name:String,
     manager:String,
     quantity : String,
-    price : Number,
+    price : String,
     location:String,
     address:String,
     state:String,
     district:String,
-    pincode:Number
+    pincode:String
 });
 
 module.exports = mongoose.model("Warehouse", warehouseSchema);

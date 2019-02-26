@@ -1,3 +1,5 @@
+const _                 = require('lodash');
+
 var express                 = require("express"),
     router                  = express.Router(),
     Farmer                  = require("../models/farmer"),
@@ -31,7 +33,8 @@ var express                 = require("express"),
 //------------- ADD WAREHOUSE ------------------
 
     router.post('/sahayata/storage/:id', (req,res)=>{
-       Warehouse.create(req.body.warehouse).then(warehouse=>{
+        var body = _.pick(req.body,['name','manager','quantity','price','address','state','district','pincode']);
+       Warehouse.create(body).then(warehouse=>{
         console.log('storage created');
         User.findById(req.params.id).then(user=>{
           console.log('inside findbyid');
