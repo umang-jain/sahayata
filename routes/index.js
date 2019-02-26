@@ -8,11 +8,10 @@ router.get("/",function(req,res){
 
 router.get('/search',(req,res) => {
     // var curerntLocation = req.user.location
-    // var curerntLocation =
-    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=2`;
-    var geoArray = [];
-    var urlArray = [];
-
+    var curerntLocation = "28.686273800000002,77.2217831"
+    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=10`;
+    var promises = [];
+    var finalobject = {};
     axios({
         method:'get',
         url
@@ -23,46 +22,44 @@ router.get('/search',(req,res) => {
             var state = record.state.split(' ').join('+');
             var market = record.market.split(' ').join('+');
             var address = `${market}%2C+${district}%2C+${state}`;
-            var url2 = "https://api.opencagedata.com/geocode/v1/json?q="+address+"&key=b187e020f62f44dc9626cd922e818805";
-            urlArray.push(url2);
+            var url2 = "http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr="+address;
+            promises.push(axios.get(url2));
           })
-          return urlArray;
+          return promises;
         }).then((e)=>{
-          e.forEach((url) => {
-            axios.get(url)
-              .then((response) => {
-                  var geometry = response.data.results[0].geometry;
-                  geoArray.push(geometry);
-                })
-                .catch((err) => {
-                  console.log(err);
-                  res.status(400).send();
-                })
-          })
-          return geoArray
+          var resArray = Promise.all(promises);
+          return resArray;
         }).then((arr) => {
-          console.log(arr);
-          res.send(arr);
+          var geoArray = [];
+          arr.forEach((res) => {
+            var lat = res.data.results[0].lat;
+            var lng = res.data.results[0].lng;
+            var geometry = {
+              lat,
+              lng
+            }
+            geoArray.push(geometry)
+          });
+          var addresslatlng = "";
+          var latlngarray = [];
+          geoArray.forEach((geo) => {
+             addresslatlng = geo.lat + "," + geo.lng;
+             latlngarray.push(addresslatlng);
+           });
+           return latlngarray;
+        }).then((a) => {
+          console.log(a);
+          var addressString = a.join('|');
+          return axios.get(`https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${curerntLocation}&pts=${addressString}&rtype=0`);
+        }).then((res) => {
+          var disarray = res.data.results;
+          disarray.sort(function(a, b){return a.length - b.length});
+          console.log(disarray);
         })
         .catch(function (err) {
           console.log(err);
           res.status(400).send();
         });
 });
-
-function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
-  var R = 6371;
-  var dLat = deg2rad(lat2-lat1);
-  var dLon = deg2rad(lon2-lon1);
-  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-    Math.sin(dLon/2) * Math.sin(dLon/2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  var d = R * c;
-  return d;
-}
-
-function deg2rad(deg) {
-  return deg * (Math.PI/180)
-}
 
 module.exports = router;
