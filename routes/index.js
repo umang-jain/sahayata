@@ -9,14 +9,15 @@ router.get("/",function(req,res){
 router.get('/search',(req,res) => {
     // var curerntLocation = req.user.location
     var curerntLocation = "28.686273800000002,77.2217831"
-    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=10`;
+    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=2`;
     var promises = [];
-    var finalobject = {};
+
     axios({
         method:'get',
         url
     }).then((response) => {
           var records = response.data.records;
+          
           records.forEach((record) => {
             var district = record.district.split(' ').join('+');
             var state = record.state.split(' ').join('+');
@@ -30,6 +31,7 @@ router.get('/search',(req,res) => {
           var resArray = Promise.all(promises);
           return resArray;
         }).then((arr) => {
+          console.log(arr);
           var geoArray = [];
           arr.forEach((res) => {
             var lat = res.data.results[0].lat;
@@ -49,12 +51,11 @@ router.get('/search',(req,res) => {
            return latlngarray;
         }).then((a) => {
           console.log(a);
-          var addressString = a.join('|');
-          return axios.get(`https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${curerntLocation}&pts=${addressString}&rtype=0`);
-        }).then((res) => {
-          var disarray = res.data.results;
-          disarray.sort(function(a, b){return a.length - b.length});
-          console.log(disarray);
+          // var addressString = a.join('|');
+          // return axios.get(`https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${curerntLocation}&pts=${addressString}&rtype=0`);
+        // }).then((res) => {
+          // var disarray = res.data.results;
+          // disarray.sort(function(a, b){return a.length - b.length});
         })
         .catch(function (err) {
           console.log(err);

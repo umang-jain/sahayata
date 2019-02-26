@@ -1,7 +1,7 @@
 var mongoose=require("mongoose");
 
 var vehicleSchema = new mongoose.Schema({
-    name : String,
+    type : String,
     vehicleNumber : String,
     capacity : Number,
     price : Number

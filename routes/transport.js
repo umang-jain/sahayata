@@ -8,46 +8,71 @@ var express                 = require("express"),
 
     var {User}                    = require("../models/user");
 
-    router.get("/sahayata/transport",function(req,res){
-      User.find().then((transports) => {
-        res.send(JSON.stringify(transports));
-      }, (err) => {
-        res.status(400).send(err);
-      });
-    });
-
-    router.post("/sahayata/transport",(req,res) => {
-            User.create(req.body.transport).then((transport) => {
-                   res.send(JSON.stringify(transport));
-               },(err) => {
-                 console.log(err);
-                 res.status(400).send(err);
-               });
-    });
-    router.get("/sahayata/transport/:id",function(req,res){
-            User.findById(req.params.id).populate("vehicles").exec().then((transport) => {
-                    if (!transport) {
-                      return res.status(404).send();
-                    }
-                    res.send(JSON.stringify(transport));
-                }).catch((e) => {
-                  res.status(400).send();
-                });
-    });
-
+//------------ ADD Vehicle----------------
     router.post('/sahayata/transport/:id', (req,res)=>{
-      Vehicle.create(req.body.vehicles).then(vehicle=>{
-        console.log('vehicle created');
+       Vehicle.create(req.body.vehicle).then(vehicle=>{
         User.findById(req.params.id).then(user=>{
-          console.log('inside findbyid');
-          console.log(user);
           user.vehicles.push(vehicle);
           user.save();
-          res.status(200).send(user);
+          res.status(200).send(vehicle);
         },e=>{console.log("user not found");
           return res.status(404).send(e);});
-      },e=>{console.log("vehicle not created");return res.status(404).send(e);});
+      },e=>{console.log("storage not created");return res.status(404).send(e);});
     });
+
+//--------- GET all Vehicles -----------
+
+router.get("/sahayata/transport/:id",function(req,res){
+  User.findById(req.params.id).populate("vehicles").exec().then((user) => {
+          if (!user) {
+            return res.status(404).send();
+          }
+          res.send(user.vehicles);
+      }).catch((e) => {
+        res.status(400).send(e);
+      });
+});
+
+    // router.get("/sahayata/transport",function(req,res){
+    //   User.find().then((transports) => {
+    //     res.send(JSON.stringify(transports));
+    //   }, (err) => {
+    //     res.status(400).send(err);
+    //   });
+    // });
+    //
+    // router.post("/sahayata/transport",(req,res) => {
+    //         User.create(req.body.transport).then((transport) => {
+    //                res.send(JSON.stringify(transport));
+    //            },(err) => {
+    //              console.log(err);
+    //              res.status(400).send(err);
+    //            });
+    // });
+    // router.get("/sahayata/transport/:id",function(req,res){
+    //         User.findById(req.params.id).populate("vehicles").exec().then((transport) => {
+    //                 if (!transport) {
+    //                   return res.status(404).send();
+    //                 }
+    //                 res.send(JSON.stringify(transport));
+    //             }).catch((e) => {
+    //               res.status(400).send();
+    //             });
+    // });
+    //
+    // router.post('/sahayata/transport/:id', (req,res)=>{
+    //   Vehicle.create(req.body.vehicles).then(vehicle=>{
+    //     console.log('vehicle created');
+    //     User.findById(req.params.id).then(user=>{
+    //       console.log('inside findbyid');
+    //       console.log(user);
+    //       user.vehicles.push(vehicle);
+    //       user.save();
+    //       res.status(200).send(user);
+    //     },e=>{console.log("user not found");
+    //       return res.status(404).send(e);});
+    //   },e=>{console.log("vehicle not created");return res.status(404).send(e);});
+    // });
 
 
 // router.get("/sahayata/transport",function(req,res){

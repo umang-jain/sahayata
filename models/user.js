@@ -47,6 +47,12 @@ var UserSchema = new mongoose.Schema({
               ref: "Crop"
           }
       ],
+  warehouses:[
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref: "Warehouse"
+    }
+  ],
   tokens: [{
     access: {
       type: String,
