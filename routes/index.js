@@ -6,7 +6,7 @@ router.get("/",function(req,res){
    res.render("home");
 });
 
-router.get('/search',(req,res) => {
+router.get('/search/crop',(req,res) => {
     // var curerntLocation = req.user.location
     var curerntLocation = "28.686273800000002,77.2217831"
     var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=2`;
@@ -17,7 +17,7 @@ router.get('/search',(req,res) => {
         url
     }).then((response) => {
           var records = response.data.records;
-          
+
           records.forEach((record) => {
             var district = record.district.split(' ').join('+');
             var state = record.state.split(' ').join('+');

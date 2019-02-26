@@ -1,9 +1,8 @@
 var mongoose=require("mongoose");
 
 var cropSchema = new mongoose.Schema({
-    type : String,
+    crop : String,
     quantity : String,
-    price : String
 });
 
 module.exports = mongoose.model("Crop", cropSchema);
