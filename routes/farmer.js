@@ -45,7 +45,7 @@ var express                 = require("express"),
     //adding crops
 
     router.post('/sahayata/farmer/:id', (req,res)=>{
-        var body = _.pick(req.body,['crop','quanity']);
+        var body = _.pick(req.body,['crop','quantity']);
       Crop.create(body).then(crop=>{
         User.findById(req.params.id).then(user=>{
           user.crops.push(crop);
