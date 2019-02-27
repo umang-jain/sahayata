@@ -1,4 +1,5 @@
 const _                 = require('lodash');
+const axios             = require('axios');
 
 var express                 = require("express"),
     router                  = express.Router(),
@@ -39,13 +40,22 @@ router.get("/sahayata/transport/:id",function(req,res){
 //------- get all vehicles irrespective of a user-------------
 
 router.get("/sahayata/transportall/:id", (req,res) => {
+  var geometry = {};
   User.findById(req.params.id).then((user) =>{
-    var userDistrict = user.district;
-    var userState = user.state;
-    console.log(userDistrict);
-    console.log(userState);
-    //  http://apis.mapmyindia.com/advancedmaps/v1/<licence_key>/geo_code?addr=<query>&pin=<query>v
-  }).catch((err) => {
+    var userDistrict = user.district.split(' ').join('+');
+    var userState = user.state.split(' ').join('+');
+    var add = `${userDistrict}%2C+${userState}`;
+    return axios.get(`http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${add}`);
+  })
+  .then((response) => {
+    geometry.lat = response.data.results[0].lat;
+    geometry.lng = response.data.results[0].lng;
+    return Vehicle.find()
+  })
+  .then((response) => {
+    // console.log(response);
+  })
+  .catch((err) => {
     res.status(400).send(err);
   })
 });

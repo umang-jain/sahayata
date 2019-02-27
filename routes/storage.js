@@ -47,7 +47,7 @@ var express                 = require("express"),
       },e=>{console.log("storage not created");return res.status(404).send(e);});
     });
 
-//------------ GET ALL WAREHOUSES -------------
+//------------ GET ALL WAREHOUSES BELONGING TO A USER -------------
 
 router.get("/sahayata/storage/:id",function(req,res){
   User.findById(req.params.id).populate("warehouses").exec().then((user) => {
@@ -60,5 +60,29 @@ router.get("/sahayata/storage/:id",function(req,res){
         res.status(400).send(e);
       });
 });
+
+// ----------- GET ALL WAREHOUSES IRRESPECTIVE OF USER---------
+
+router.get("/sahayata/transportall/:id", (req,res) => {
+  var geometry = {};
+  User.findById(req.params.id).then((user) =>{
+    var userDistrict = user.district.split(' ').join('+');
+    var userState = user.state.split(' ').join('+');
+    var add = `${userDistrict}%2C+${userState}`;
+    return axios.get(`http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${add}`);
+  })
+  .then((response) => {
+    geometry.lat = response.data.results[0].lat;
+    geometry.lng = response.data.results[0].lng;
+    return Vehicle.find()
+  })
+  .then((response) => {
+    // console.log(response);
+  })
+  .catch((err) => {
+    res.status(400).send(err);
+  })
+});
+
 
 module.exports = router;
