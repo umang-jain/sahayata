@@ -13,7 +13,8 @@ router.post("/login", (req, res) => {
   User.findByCredentials(body.email, body.password)
     .then(user => {
       return user.generateAuthToken().then(token => {
-        res.status(200).send({ token: token, type: user.type });
+        console.log(user);
+        res.status(200).send({ token: token, type: user.type,email: user.email,userId: user._id });
       });
     })
     .catch(e => {
