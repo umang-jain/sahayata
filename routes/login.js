@@ -16,7 +16,7 @@ router.post("/login",(req,res)=>{
 });
 
 router.post("/register",(req,res)=>{
-  var body = _.pick(req.body, 'email', 'password', 'type');
+  var body = _.pick(req.body, 'email', 'password','type','firstName','mobileNo','sex','district','state');
   var user = new User(body);
   user.save().then(() => {
     return user.generateAuthToken();

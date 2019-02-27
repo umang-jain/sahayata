@@ -29,7 +29,7 @@ var express                 = require("express"),
     //         });
     // });
 
-//----------- Get all crops ---------------
+//----------- Get all crops related to a user ---------------
 
     router.get("/sahayata/farmer/:id",function(req,res){
           User.findById(req.params.id).populate("crops").exec().then((user) => {
@@ -41,6 +41,7 @@ var express                 = require("express"),
               res.status(400).send();
           });
     });
+
 
     //adding crops
 

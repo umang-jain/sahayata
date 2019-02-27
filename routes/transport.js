@@ -23,7 +23,7 @@ var express                 = require("express"),
       },e=>{console.log("storage not created");return res.status(404).send(e);});
     });
 
-//--------- GET all Vehicles -----------
+//--------- GET all Vehicles for a user -----------
 
 router.get("/sahayata/transport/:id",function(req,res){
   User.findById(req.params.id).populate("vehicles").exec().then((user) => {
@@ -36,13 +36,21 @@ router.get("/sahayata/transport/:id",function(req,res){
       });
 });
 
-    // router.get("/sahayata/transport",function(req,res){
-    //   User.find().then((transports) => {
-    //     res.send(JSON.stringify(transports));
-    //   }, (err) => {
-    //     res.status(400).send(err);
-    //   });
-    // });
+//------- get all vehicles irrespective of a user-------------
+
+router.get("/sahayata/transportall/:id", (req,res) => {
+  User.findById(req.params.id).then((user) =>{
+    var userDistrict = user.district;
+    var userState = user.state;
+    console.log(userDistrict);
+    console.log(userState);
+    //  http://apis.mapmyindia.com/advancedmaps/v1/<licence_key>/geo_code?addr=<query>&pin=<query>v
+  }).catch((err) => {
+    res.status(400).send(err);
+  })
+});
+
+
     //
     // router.post("/sahayata/transport",(req,res) => {
     //         User.create(req.body.transport).then((transport) => {
