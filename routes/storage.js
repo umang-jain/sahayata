@@ -63,12 +63,14 @@ router.get("/sahayata/storage/:id",function(req,res){
 
 // ----------- GET ALL WAREHOUSES IRRESPECTIVE OF USER---------
 
-router.get("/sahayata/transportall/:id", (req,res) => {
+router.get("/sahayata/storageall/:id", (req,res) => {
   var geometry = {};
   User.findById(req.params.id).then((user) =>{
     var userDistrict = user.district.split(' ').join('+');
     var userState = user.state.split(' ').join('+');
-    var add = `${userDistrict}%2C+${userState}`;
+    var userPincode = user.pincode;
+    var add = `${userDistrict}%2C+${userState}%2C+${userPincode}`;
+    console.log(add);
     return axios.get(`http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${add}`);
   })
   .then((response) => {

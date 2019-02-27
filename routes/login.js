@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var _ = require("lodash");
 var { User } = require("../models/user");
-var { authenticate } = require("./../middleware/authenticate");
+var { authenticate } = require("../middleware/authenticate");
 
 router.get("/auth",authenticate,(req,res)=>{
   res.status(200).send(req.user);
