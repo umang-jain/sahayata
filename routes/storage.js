@@ -1,4 +1,5 @@
 const _                 = require('lodash');
+const axios             = require('axios');
 
 var express                 = require("express"),
     router                  = express.Router(),
@@ -35,10 +36,7 @@ var express                 = require("express"),
     router.post('/sahayata/storage/:id', (req,res)=>{
         var body = _.pick(req.body,['name','manager','quantity','price','address','state','district','pincode']);
        Warehouse.create(body).then(warehouse=>{
-        console.log('storage created');
         User.findById(req.params.id).then(user=>{
-          console.log('inside findbyid');
-          console.log(user);
           user.warehouses.push(warehouse);
           user.save();
           res.status(200).send(warehouse);
@@ -65,21 +63,69 @@ router.get("/sahayata/storage/:id",function(req,res){
 
 router.get("/sahayata/storageall/:id", (req,res) => {
   var geometry = {};
+  var storageArray = [];
   User.findById(req.params.id).then((user) =>{
     var userDistrict = user.district.split(' ').join('+');
     var userState = user.state.split(' ').join('+');
-    var userPincode = user.pincode;
-    var add = `${userDistrict}%2C+${userState}%2C+${userPincode}`;
-    console.log(add);
-    return axios.get(`http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${add}`);
+    var add = `${userDistrict}%2C+${userState}`;
+    var url = `http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${add}`
+    return axios.get(url);
   })
   .then((response) => {
     geometry.lat = response.data.results[0].lat;
     geometry.lng = response.data.results[0].lng;
-    return Vehicle.find()
+    return Warehouse.find().lean();
   })
   .then((response) => {
-    // console.log(response);
+    var promises = [];
+    storageArray = response;
+    storageArray.forEach((storage) => {
+      var district = storage.district.split(' ').join('+');
+      var state = storage.state.split(' ').join('+');
+      var pincode = storage.pincode.split(' ').join('+');
+      var add =` http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${district}%2C+${state}&pin=${pincode}`;
+      promises.push(axios.get(add));
+    });
+    return promises;
+  })
+  .then((e)=>{
+    var resArray = Promise.all(e);
+    return resArray;
+  })
+  .then((arr) => {
+    arr.forEach((res,index) => {
+      var lat = res.data.results[0].lat;
+      var lng = res.data.results[0].lng;
+      var geo = {
+        lat,
+        lng
+      }
+      storageArray[index].location = geo;
+    });
+    return storageArray;
+  })
+  .then((a) => {
+    console.log(a);
+    var pro = [];
+    a.forEach((el) => {
+        var add = el.location.lat + "," + el.location.lng;
+        var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${geogeometry.lat},${geometry.lng}&pts=${add}&rtype=0`;
+        console.log(url3);
+        pro.push(axios.get(url3));
+    });
+    return pro;
+  })
+  .then((resp) => {
+    var resuArray = Promise.all(resp);
+    return resuArray;
+  })
+  .then((x) => {
+    x.forEach((element,index) => {
+      var distance = (element.data.results[0]);
+      storageArray[index].route = distance;
+    })
+    finalArray.sort(function(a,b){return a.route.length - b.route.length});
+    res.send(storageArray);
   })
   .catch((err) => {
     res.status(400).send(err);

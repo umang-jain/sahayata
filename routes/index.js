@@ -26,7 +26,10 @@ router.get('/search/crop',(req,res) => {
               crop:record.commodity,
               market,
               district,
-              state
+              state,
+              min_price:record.min_price,
+              max_price:record.max_price,
+              modal_price:record.modal_price
             }
             finalArray.push(finalObj);
             var url2 = "http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr="+address;
