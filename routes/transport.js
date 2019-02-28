@@ -39,21 +39,70 @@ router.get("/sahayata/transport/:id",function(req,res){
 
 //------- get all vehicles irrespective of a user-------------
 
+
 router.get("/sahayata/transportall/:id", (req,res) => {
   var geometry = {};
+  var transportArray = [];
   User.findById(req.params.id).then((user) =>{
     var userDistrict = user.district.split(' ').join('+');
     var userState = user.state.split(' ').join('+');
     var add = `${userDistrict}%2C+${userState}`;
-    return axios.get(`http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${add}`);
+    var url = `http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${add}`
+    return axios.get(url);
   })
   .then((response) => {
     geometry.lat = response.data.results[0].lat;
     geometry.lng = response.data.results[0].lng;
-    return Vehicle.find()
+    return User.find({type:"transport"}).lean();
   })
   .then((response) => {
-    // console.log(response);
+    var promises = [];
+    transportArray = response;
+    transportArray.forEach((transport) => {
+      var district = transport.district.split(' ').join('+');
+      var state = transport.state.split(' ').join('+');
+      var add =` http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${district}%2C+${state}`;
+      promises.push(axios.get(add));
+    });
+    return promises;
+  })
+  .then((e)=>{
+    var resArray = Promise.all(e);
+    return resArray;
+  })
+  .then((arr) => {
+    arr.forEach((res,index) => {
+      var lat = res.data.results[0].lat;
+      var lng = res.data.results[0].lng;
+      var geo = {
+        lat,
+        lng
+      }
+      transportArray[index].location = geo;
+    });
+    return transportArray;
+  })
+  .then((a) => {
+    console.log(a);
+    var pro = [];
+    a.forEach((el) => {
+        var add = el.location.lat + "," + el.location.lng;
+        var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${geometry.lat},${geometry.lng}&pts=${add}&rtype=0 `;
+        pro.push(axios.get(url3));
+    });
+    return pro;
+  })
+  .then((resp) => {
+    var resuArray = Promise.all(resp);
+    return resuArray;
+  })
+  .then((x) => {
+    x.forEach((element,index) => {
+      var distance = (element.data.results[0]);
+      transportArray[index].route = distance;
+    })
+    transportArray.sort(function(a,b){return a.route.length - b.route.length});
+    res.send(transportArray);
   })
   .catch((err) => {
     res.status(400).send(err);

@@ -6,6 +6,8 @@ router.get("/",function(req,res){
    res.render("home");
 });
 
+//--------- GET ALL MARKET PRICES -------------------
+
 router.get('/search/crop',(req,res) => {
     // var curerntLocation = req.user.location
     var curerntLocation = "28.686273800000002,77.2217831"
