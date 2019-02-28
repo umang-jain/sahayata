@@ -105,12 +105,10 @@ router.get("/sahayata/storageall/:id", (req,res) => {
     return storageArray;
   })
   .then((a) => {
-    console.log(a);
     var pro = [];
     a.forEach((el) => {
         var add = el.location.lat + "," + el.location.lng;
-        var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${geogeometry.lat},${geometry.lng}&pts=${add}&rtype=0`;
-        console.log(url3);
+        var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${geometry.lat},${geometry.lng}&pts=${add}&rtype=0 `;
         pro.push(axios.get(url3));
     });
     return pro;
@@ -124,7 +122,7 @@ router.get("/sahayata/storageall/:id", (req,res) => {
       var distance = (element.data.results[0]);
       storageArray[index].route = distance;
     })
-    finalArray.sort(function(a,b){return a.route.length - b.route.length});
+    storageArray.sort(function(a,b){return a.route.length - b.route.length});
     res.send(storageArray);
   })
   .catch((err) => {

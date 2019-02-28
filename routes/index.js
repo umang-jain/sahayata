@@ -69,7 +69,7 @@ router.get('/search/crop',(req,res) => {
           });
           return pro;
           // var addressString = a.join('|');
-          // return axios.get(`https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${curerntLocation}&pts=${addressString}&rtype=0`);
+          return axios.get(`https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${curerntLocation}&pts=${addressString}&rtype=0`);
         }).then((resp) => {
           var resuArray = Promise.all(resp);
           return resuArray;
