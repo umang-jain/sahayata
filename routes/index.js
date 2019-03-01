@@ -11,7 +11,7 @@ router.get("/",function(req,res){
 router.get('/search/crop',(req,res) => {
     // var curerntLocation = req.user.location
     var curerntLocation = "28.686273800000002,77.2217831"
-    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=10`;
+    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=100`;
     var promises = [];
     var finalArray = [];
     axios({
