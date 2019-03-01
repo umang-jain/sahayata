@@ -4,7 +4,7 @@ const axios             = require('axios');
 var express                 = require("express"),
     router                  = express.Router(),
     Warehouse               = require("../models/warehouse");
-    order               = require("../models/order");
+    Order               = require("../models/order");
 
     var {User}                    = require("../models/user");
 
@@ -45,14 +45,14 @@ var express                 = require("express"),
 
 router.post('/order/:id/storage/:warehouseid',(req,res) => {
   var userobj = {};
-  var warehouseobj = {};
+  var serviceobj = {};
   User.findById(req.params.id)
   .then((user) => {
     userobj = user;
     return Warehouse.findById(req.params.warehouseid);
   })
   .then((warehouse) => {
-    warehouseobj = warehouse;
+    serviceobj = warehouse;
     var days = req.body.days;
     var quant = Number(req.body.quantity);
     if((quant/1000) <= Number(warehouse.quantity)){
@@ -61,7 +61,7 @@ router.post('/order/:id/storage/:warehouseid',(req,res) => {
       return Order.create({
         type:"storage",
         userobj,
-        warehouseobj,
+        serviceobj,
         amount
       });
   }else{
@@ -69,7 +69,7 @@ router.post('/order/:id/storage/:warehouseid',(req,res) => {
   }
   })
   .then((order) => {
-    console.log(order);
+    res.send(order);
   })
   .catch((err) => {
     res.status(404).send(err)

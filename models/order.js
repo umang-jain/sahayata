@@ -3,7 +3,7 @@ var mongoose=require("mongoose");
 var orderSchema = new mongoose.Schema({
     type:String,
     userobj:Object,
-    serviceObj:Object,
+    serviceobj:Object,
     amount:String
 });
 
