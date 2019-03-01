@@ -40,6 +40,8 @@ var express                 = require("express"),
           return res.status(404).send(e);});
       },e=>{console.log("storage not created");return res.status(404).send(e);});
     });
+// ----------- BOOK warehouse --------------
+
 
 //------------ GET ALL WAREHOUSES BELONGING TO A USER -------------
 
