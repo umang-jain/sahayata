@@ -1,6 +1,7 @@
 var mongoose=require("mongoose");
 
-var warehouseSchema = new mongoose.Schema({
+var orderSchema = new mongoose.Schema({
+    type:String,
     name:String,
     manager:String,
     quantity : String,
