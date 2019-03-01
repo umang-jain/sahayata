@@ -8,12 +8,12 @@ var express                 = require("express"),
     Vehicle                 = require("../models/vehicle"),
     Crop                    = require("../models/crop");
 
-    var {User}                    = require("../models/user");
+var {User}                    = require("../models/user");
 
 //------------ ADD Vehicle----------------
     router.post('/sahayata/transport/:id', (req,res)=>{
       var body = _.pick(req.body,['type','vehicleNumber','capacity','price']);
-       Vehicle.create(body).then(vehicle=>{
+      Vehicle.create(body).then(vehicle=>{
         User.findById(req.params.id).then(user=>{
           user.vehicles.push(vehicle);
           user.save();
