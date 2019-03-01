@@ -3,11 +3,7 @@ const axios             = require('axios');
 
 var express                 = require("express"),
     router                  = express.Router(),
-    Farmer                  = require("../models/farmer"),
-    Storage                 = require("../models/storage"),
-    Transport               = require("../models/transport"),
-    Vehicle                 = require("../models/vehicle"),
-    Crop                    = require("../models/crop");
+    Vehicle                 = require("../models/vehicle");
 
     var {User}                    = require("../models/user");
 

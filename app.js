@@ -6,19 +6,13 @@ var express                 = require("express"),
     bodyparser              = require("body-parser"),
     methodoverride          = require("method-override"),
     expresssanitizer        = require("express-sanitizer"),
-    cors                    = require("cors"),
-    Farmer                  = require("./models/farmer"),
-    Storage                 = require("./models/storage"),
-    Transport               = require("./models/transport"),
-    Vehicle                 = require("./models/vehicle"),
-    User                    = require("./models/user");
+    cors                    = require("cors");
 
 var farmerRoutes            = require('./routes/farmer'),
     storageRoutes           = require('./routes/storage'),
     transportRoutes         = require('./routes/transport'),
-    vehicleRoutes           = require('./routes/vehicle'),
-    indexRoutes             = require('./routes/index');
-    loginRoutes             = require('./routes/login')
+    indexRoutes             = require('./routes/index'),
+    loginRoutes             = require('./routes/login');
 
 var { authenticate }        = require("./middleware/authenticate.js");
 var { mongoose }            = require("./db/mongoose.js");
@@ -37,7 +31,6 @@ app.use(methodoverride("_method"));
 app.use(farmerRoutes);
 app.use(storageRoutes);
 app.use(transportRoutes);
-app.use(vehicleRoutes);
 app.use(indexRoutes);
 app.use(loginRoutes);
 

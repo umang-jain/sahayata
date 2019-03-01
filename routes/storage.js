@@ -3,11 +3,7 @@ const axios             = require('axios');
 
 var express                 = require("express"),
     router                  = express.Router(),
-    Farmer                  = require("../models/farmer"),
-    Warehouse               = require("../models/warehouse"),
-    Transport               = require("../models/transport"),
-    Vehicle                 = require("../models/vehicle"),
-    Crop                    = require("../models/crop");
+    Warehouse               = require("../models/warehouse");
 
     var {User}                    = require("../models/user");
 
@@ -52,7 +48,6 @@ router.get("/sahayata/storage/:id",function(req,res){
           if (!user) {
             return res.status(404).send();
           }
-          console.log(user);
           res.send(user.warehouses);
       }).catch((e) => {
         res.status(400).send(e);
