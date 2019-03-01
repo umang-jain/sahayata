@@ -4,6 +4,7 @@ const axios             = require('axios');
 var express                 = require("express"),
     router                  = express.Router(),
     Warehouse               = require("../models/warehouse");
+    order               = require("../models/order");
 
     var {User}                    = require("../models/user");
 
@@ -42,7 +43,38 @@ var express                 = require("express"),
     });
 // ----------- BOOK warehouse --------------
 
-
+router.post('/order/:id/storage/:warehouseid',(req,res) => {
+  var userobj = {};
+  var warehouseobj = {};
+  User.findById(req.params.id)
+  .then((user) => {
+    userobj = user;
+    return Warehouse.findById(req.params.warehouseid);
+  })
+  .then((warehouse) => {
+    warehouseobj = warehouse;
+    var days = req.body.days;
+    var quant = Number(req.body.quantity);
+    if((quant/1000) <= Number(warehouse.quantity)){
+      var amount = days*quant*Number(warehouse.price);
+      console.log(amount);
+      return Order.create({
+        type:"storage",
+        userobj,
+        warehouseobj,
+        amount
+      });
+  }else{
+    res.status(404).send("Warehouse capacity is not enough! Please choose another storage");
+  }
+  })
+  .then((order) => {
+    console.log(order);
+  })
+  .catch((err) => {
+    res.status(404).send(err)
+  });
+});
 //------------ GET ALL WAREHOUSES BELONGING TO A USER -------------
 
 router.get("/sahayata/storage/:id",function(req,res){
