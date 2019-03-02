@@ -1,12 +1,26 @@
 var express = require("express"),
     router  = express.Router();
 const axios = require('axios');
+var fun = require("./getLocation");
+var json  = require("./city.list.json");
 
 router.get("/",function(req,res){
    res.render("home");
 });
 
 //--------- GET ALL MARKET PRICES -------------------
+
+router.get("/locationOfPlace/:place",(req,res)=> {
+  // var place = "Delhi";
+  json.map((element)=>{
+    if(element.name == req.params.place){
+      res.status(200).send(element);
+    }
+  })
+});
+
+
+
 
 router.get('/search/crop',(req,res) => {
     // var curerntLocation = req.user.location

@@ -52,6 +52,29 @@ var express                 = require("express"),
       },e=>{console.log("crop not created");return res.status(404).send(e);});
     });
 
+  router.get("/profit",(req,res)=>{
+    var cropName = "maize";
+    var cropQuantity = 100;//kg
+    var nearTrasport = 10;//km
+    var nearestMandi = 100;//km
+    var transportPrice = 5;//rs/km
+    var nearestWarehouse = 12//km
+    var nearestCropPrice = 12;//rs/kg // yet to solve that is that nearest or the effectiest
+    var lastyearMaxPrice = 30;//rm/lg // yet to find
+    var nearestWarehousePrice = 0.12;//kg/month
+    var ans1  = (cropQuantity * nearestCropPrice) - (transportPrice * nearestMandi);
+    var ans2  = (cropQuantity * lastyearMaxPrice) - (transportPrice * nearestWarehouse);
+    var ans1json = {
+      cropQuantity, nearestCropPrice,transportPrice,nearestMandi
+    }
+    var ans2json  = {
+      cropQuantity, lastyearMaxPrice, transportPrice, nearestWarehouse
+    }
+    var data = {type1: ans1json,type2: ans2json, cropName: cropName, type1ans: ans1, type2ans: ans2};
+    res.status(200).send(data);
+    // console.log(res);
+  });
+
 
 // router.get("/sahayata/farmer",function(req,res){
 //       Farmer.find().then((farmers) => {
