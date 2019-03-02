@@ -3,11 +3,8 @@ const axios             = require('axios');
 
 var express                 = require("express"),
     router                  = express.Router(),
-    Farmer                  = require("../models/farmer"),
-    Warehouse               = require("../models/warehouse"),
-    Transport               = require("../models/transport"),
-    Vehicle                 = require("../models/vehicle"),
-    Crop                    = require("../models/crop");
+    Warehouse               = require("../models/warehouse");
+    Order               = require("../models/order");
 
     var {User}                    = require("../models/user");
 
@@ -44,7 +41,40 @@ var express                 = require("express"),
           return res.status(404).send(e);});
       },e=>{console.log("storage not created");return res.status(404).send(e);});
     });
+// ----------- BOOK warehouse --------------
 
+router.post('/order/:id/storage/:warehouseid',(req,res) => {
+  var userobj = {};
+  var serviceobj = {};
+  User.findById(req.params.id)
+  .then((user) => {
+    userobj = user;
+    return Warehouse.findById(req.params.warehouseid);
+  })
+  .then((warehouse) => {
+    serviceobj = warehouse;
+    var days = req.body.days;
+    var quant = Number(req.body.quantity);
+    if((quant/1000) <= Number(warehouse.quantity)){
+      var amount = days*quant*Number(warehouse.price);
+      console.log(amount);
+      return Order.create({
+        type:"storage",
+        userobj,
+        serviceobj,
+        amount
+      });
+  }else{
+    res.status(404).send("Warehouse capacity is not enough! Please choose another storage");
+  }
+  })
+  .then((order) => {
+    res.send(order);
+  })
+  .catch((err) => {
+    res.status(404).send(err)
+  });
+});
 //------------ GET ALL WAREHOUSES BELONGING TO A USER -------------
 
 router.get("/sahayata/storage/:id",function(req,res){
@@ -52,7 +82,6 @@ router.get("/sahayata/storage/:id",function(req,res){
           if (!user) {
             return res.status(404).send();
           }
-          console.log(user);
           res.send(user.warehouses);
       }).catch((e) => {
         res.status(400).send(e);

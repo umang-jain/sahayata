@@ -3,8 +3,8 @@ var mongoose=require("mongoose");
 var warehouseSchema = new mongoose.Schema({
     name:String,
     manager:String,
-    quantity : String,
-    price : String,
+    quantity : String, // tonnes
+    price : String, // per kg
     location:String,
     address:String,
     state:String,

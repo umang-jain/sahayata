@@ -3,15 +3,11 @@ const axios             = require('axios');
 
 var express                 = require("express"),
     router                  = express.Router(),
-    Farmer                  = require("../models/farmer"),
-    Storage                 = require("../models/storage"),
-    Transport               = require("../models/transport"),
-    Vehicle                 = require("../models/vehicle"),
-    Crop                    = require("../models/crop");
+    Vehicle                 = require("../models/vehicle");
 
 var { User }                    = require("../models/user");
 
-//------------ ADD Vehicle----------------
+//------------ ADD Vehicle ----------------
     router.post('/sahayata/transport/:id', (req,res)=>{
       var body = _.pick(req.body,['type','vehicleNumber','capacity','price']);
       Vehicle.create(body).then(vehicle=>{
@@ -23,6 +19,42 @@ var { User }                    = require("../models/user");
           return res.status(404).send(e);});
       },e=>{console.log("storage not created");return res.status(404).send(e);});
     });
+
+//----------- BOOK Vehicle ----------------
+
+router.post('/order/:id/transport/:vehicleid',(req,res) => {
+  var userobj = {};
+  var serviceobj = {};
+  User.findById(req.params.id)
+  .then((user) => {
+    userobj = user;
+    return Vehicle.findById(req.params.vehicleid);
+  })
+  .then((vehicle) => {
+    serviceobj = vehicle;
+    var source = req.body.source;
+    var destination = req.body.destination;
+    var quant = Number(req.body.quantity);
+    if((quant) <= Number(vehicle.capacity)){
+      var amount = *quant*Number(warehouse.price);
+      console.log(amount);
+      return Order.create({
+        type:"storage",
+        userobj,
+        serviceobj,
+        amount
+      });
+  }else{
+    res.status(404).send("Warehouse capacity is not enough! Please choose another storage");
+  }
+  })
+  .then((order) => {
+    res.send(order);
+  })
+  .catch((err) => {
+    res.status(404).send(err)
+  });
+});
 
 //--------- GET all Vehicles for a user -----------
 

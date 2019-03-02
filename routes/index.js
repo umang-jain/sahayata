@@ -56,7 +56,6 @@ router.get('/search/crop',(req,res) => {
           var resArray = Promise.all(promises);
           return resArray;
         }).then((arr) => {
-          // var geoArray = [];
           arr.forEach((res,index) => {
             var lat = res.data.results[0].lat;
             var lng = res.data.results[0].lng;
@@ -65,16 +64,7 @@ router.get('/search/crop',(req,res) => {
               lng
             }
             finalArray[index].geometry = geometry
-            // geoArray.push(geometry)
           });
-          // console.log(finalArray);
-          // var addresslatlng = "";
-          // var latlngarray = [];
-          // geoArray.forEach((geo) => {
-          //    addresslatlng = geo.lat + "," + geo.lng;
-          //    latlngarray.push(addresslatlng);
-          //  });
-          //  return latlngarray;
           return finalArray;
         }).then((a) => {
           var pro = [];
@@ -84,14 +74,10 @@ router.get('/search/crop',(req,res) => {
               pro.push(axios.get(url3));
           });
           return pro;
-          // var addressString = a.join('|');
           return axios.get(`https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${curerntLocation}&pts=${addressString}&rtype=0`);
         }).then((resp) => {
           var resuArray = Promise.all(resp);
           return resuArray;
-          // var disarray = resp.data.results;
-          // disarray.sort(function(a, b){return a.length - b.length});
-          // res.send(disarray);
         })
         .then((x) => {
           x.forEach((element,index) => {

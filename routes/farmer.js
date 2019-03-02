@@ -2,10 +2,6 @@ const _                 = require('lodash');
 
 var express                 = require("express"),
     router                  = express.Router(),
-    Farmer                  = require("../models/farmer"),
-    Storage                 = require("../models/storage"),
-    Transport               = require("../models/transport"),
-    Vehicle                 = require("../models/vehicle"),
     Crop                    = require("../models/crop");
 
     var {User}                    = require("../models/user");
