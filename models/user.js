@@ -54,12 +54,6 @@ var UserSchema = new mongoose.Schema({
       ref: "Warehouse"
     }
   ],
-  order:[
-    {
-      type:mongoose.Schema.Types.ObjectId,
-      ref: "Order"
-    }
-  ],
   tokens: [{
     access: {
       type: String,

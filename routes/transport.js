@@ -110,7 +110,7 @@ router.get("/sahayata/transportall/:id", (req,res) => {
   .then((response) => {
     geometry.lat = response.data.results[0].lat;
     geometry.lng = response.data.results[0].lng;
-    return User.find({type:"transport"}).lean();
+    return User.find({type:"transport"}).lean().populate("vehicles").exec();
   })
   .then((response) => {
     var promises = [];
@@ -140,7 +140,6 @@ router.get("/sahayata/transportall/:id", (req,res) => {
     return transportArray;
   })
   .then((a) => {
-    console.log(a);
     var pro = [];
     a.forEach((el) => {
         var add = el.location.lat + "," + el.location.lng;
