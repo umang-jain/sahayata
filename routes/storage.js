@@ -44,6 +44,7 @@ var express                 = require("express"),
 // ----------- BOOK warehouse --------------
 
 router.post('/order/:id/storage/:warehouseid',(req,res) => {
+  var order = {};
   var userobj = {};
   var serviceobj = {};
   User.findById(req.params.id)
@@ -69,6 +70,13 @@ router.post('/order/:id/storage/:warehouseid',(req,res) => {
   }
   })
   .then((order) => {
+    return User.findById(req.params.id)
+  })
+  .then((user) => {
+    user.orders.push(order)
+    user.save()
+    console.log(user);
+    console.log(order);
     res.send(order);
   })
   .catch((err) => {
@@ -158,6 +166,7 @@ router.get("/sahayata/storageall/:id", (req,res) => {
     res.status(400).send(err);
   })
 });
+
 
 
 module.exports = router;
