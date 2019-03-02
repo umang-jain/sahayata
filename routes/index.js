@@ -3,6 +3,7 @@ var express = require("express"),
 const axios = require('axios');
 var fun = require("./getLocation");
 var json  = require("./city.list.json");
+var datajson  = require("./dataCrop.json");
 
 router.get("/",function(req,res){
    res.render("home");
@@ -22,6 +23,9 @@ router.get("/locationOfPlace/:place",(req,res)=> {
 
 router.get('/search/crop',(req,res) => {
     // var curerntLocation = req.user.location
+
+
+
     var curerntLocation = "12.753,80.1973"
     var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=10`;
     var promises = [];
@@ -30,7 +34,9 @@ router.get('/search/crop',(req,res) => {
         method:'get',
         url
     }).then((response) => {
-          var records = response.data.records;
+          // var records = response.data.records;
+          var records = datajson;
+          //idar records dalna hai
           records.forEach((record) => {
             var district = record.district.split(' ').join('+');
             var state = record.state.split(' ').join('+');
