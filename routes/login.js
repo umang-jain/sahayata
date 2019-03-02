@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var _ = require("lodash");
 var { User } = require("../models/user");
-var { authenticate } = require("./../middleware/authenticate");
+var { authenticate } = require("../middleware/authenticate");
 
 router.get("/auth",authenticate,(req,res)=>{
   res.status(200).send(req.user);
@@ -22,8 +22,8 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.post("/register", (req, res) => {
-  var body = _.pick(req.body, "email", "password", "type");
+router.post("/register",(req,res)=>{
+  var body = _.pick(req.body, 'email', 'password','type','firstName','mobileNo','sex','district','state');
   var user = new User(body);
   user
     .save()

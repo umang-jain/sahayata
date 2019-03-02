@@ -31,6 +31,7 @@ var UserSchema = new mongoose.Schema({
   state: {
     type: String
   },
+  location:String,
   type: {
     type: String,
     required: true

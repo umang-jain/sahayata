@@ -1,15 +1,31 @@
 var express = require("express"),
     router  = express.Router();
 const axios = require('axios');
+var fun = require("./getLocation");
+var json  = require("./city.list.json");
 
 router.get("/",function(req,res){
    res.render("home");
 });
 
+//--------- GET ALL MARKET PRICES -------------------
+
+router.get("/locationOfPlace/:place",(req,res)=> {
+  // var place = "Delhi";
+  json.map((element)=>{
+    if(element.name == req.params.place){
+      res.status(200).send(element);
+    }
+  })
+});
+
+
+
+
 router.get('/search/crop',(req,res) => {
     // var curerntLocation = req.user.location
     var curerntLocation = "28.686273800000002,77.2217831"
-    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=100`;
+    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=10`;
     var promises = [];
     var finalArray = [];
     axios({
@@ -26,7 +42,10 @@ router.get('/search/crop',(req,res) => {
               crop:record.commodity,
               market,
               district,
-              state
+              state,
+              min_price:record.min_price,
+              max_price:record.max_price,
+              modal_price:record.modal_price
             }
             finalArray.push(finalObj);
             var url2 = "http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr="+address;
@@ -66,7 +85,7 @@ router.get('/search/crop',(req,res) => {
           });
           return pro;
           // var addressString = a.join('|');
-          // return axios.get(`https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${curerntLocation}&pts=${addressString}&rtype=0`);
+          return axios.get(`https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${curerntLocation}&pts=${addressString}&rtype=0`);
         }).then((resp) => {
           var resuArray = Promise.all(resp);
           return resuArray;

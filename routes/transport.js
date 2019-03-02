@@ -1,4 +1,5 @@
 const _                 = require('lodash');
+const axios             = require('axios');
 
 var express                 = require("express"),
     router                  = express.Router(),
@@ -8,7 +9,7 @@ var express                 = require("express"),
     Vehicle                 = require("../models/vehicle"),
     Crop                    = require("../models/crop");
 
-var {User}                    = require("../models/user");
+var { User }                    = require("../models/user");
 
 //------------ ADD Vehicle----------------
     router.post('/sahayata/transport/:id', (req,res)=>{
@@ -23,7 +24,7 @@ var {User}                    = require("../models/user");
       },e=>{console.log("storage not created");return res.status(404).send(e);});
     });
 
-//--------- GET all Vehicles -----------
+//--------- GET all Vehicles for a user -----------
 
 router.get("/sahayata/transport/:id",function(req,res){
   User.findById(req.params.id).populate("vehicles").exec().then((user) => {
@@ -36,13 +37,77 @@ router.get("/sahayata/transport/:id",function(req,res){
       });
 });
 
-    // router.get("/sahayata/transport",function(req,res){
-    //   User.find().then((transports) => {
-    //     res.send(JSON.stringify(transports));
-    //   }, (err) => {
-    //     res.status(400).send(err);
-    //   });
-    // });
+//------- get all vehicles irrespective of a user-------------
+router.get("/sahayata/transportall/:id", (req,res) => {
+  var geometry = {};
+  var transportArray = [];
+  User.findById(req.params.id).then((user) =>{
+    var userDistrict = user.district.split(' ').join('+');
+    var userState = user.state.split(' ').join('+');
+    var add = `${userDistrict}%2C+${userState}`;
+    var url = `http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${add}`
+    return axios.get(url);
+  })
+  .then((response) => {
+    geometry.lat = response.data.results[0].lat;
+    geometry.lng = response.data.results[0].lng;
+    return User.find({type:"transport"}).lean();
+  })
+  .then((response) => {
+    var promises = [];
+    transportArray = response;
+    transportArray.forEach((transport) => {
+      var district = transport.district.split(' ').join('+');
+      var state = transport.state.split(' ').join('+');
+      var add =` http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${district}%2C+${state}`;
+      promises.push(axios.get(add));
+    });
+    return promises;
+  })
+  .then((e)=>{
+    var resArray = Promise.all(e);
+    return resArray;
+  })
+  .then((arr) => {
+    arr.forEach((res,index) => {
+      var lat = res.data.results[0].lat;
+      var lng = res.data.results[0].lng;
+      var geo = {
+        lat,
+        lng
+      }
+      transportArray[index].location = geo;
+    });
+    return transportArray;
+  })
+  .then((a) => {
+    console.log(a);
+    var pro = [];
+    a.forEach((el) => {
+        var add = el.location.lat + "," + el.location.lng;
+        var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${geometry.lat},${geometry.lng}&pts=${add}&rtype=0 `;
+        pro.push(axios.get(url3));
+    });
+    return pro;
+  })
+  .then((resp) => {
+    var resuArray = Promise.all(resp);
+    return resuArray;
+  })
+  .then((x) => {
+    x.forEach((element,index) => {
+      var distance = (element.data.results[0]);
+      transportArray[index].route = distance;
+    })
+    transportArray.sort(function(a,b){return a.route.length - b.route.length});
+    res.send(transportArray);
+  })
+  .catch((err) => {
+    res.status(400).send(err);
+  })
+});
+
+
     //
     // router.post("/sahayata/transport",(req,res) => {
     //         User.create(req.body.transport).then((transport) => {
