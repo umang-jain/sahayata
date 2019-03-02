@@ -25,6 +25,8 @@ var express                 = require("express"),
 router.post('/order/:id/transport/:vehicleid',(req,res) => {
   var userobj = {};
   var serviceobj = {};
+  var sourceloc = {};
+  var destloc = {};
   User.findById(req.params.id)
   .then((user) => {
     userobj = user;
@@ -32,21 +34,43 @@ router.post('/order/:id/transport/:vehicleid',(req,res) => {
   })
   .then((vehicle) => {
     serviceobj = vehicle;
-    var source = req.body.source;
-    var destination = req.body.destination;
+    var source = req.body.source.split(' ').join('+').split(',').join('%2C');
+    var url = ` http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${source}`;
+    return axios.get(url);
+  })
+  .then((res) => {
+    var destination = req.body.destination.split(' ').join('+').split(',').join('%2C');
+    var lat = res.data.results[0].lat;
+    var lng = res.data.results[0].lng;
+    sourceloc = {
+      lat,
+      lng
+    };
+    var url2 = ` http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${destination}`;
+    return axios.get(url2);
+  })
+  .then((response) => {
+    var lat = response.data.results[0].lat;
+    var lng = response.data.results[0].lng;
+    destloc = {
+      lat,
+      lng
+    }
     var quant = Number(req.body.quantity);
-    if((quant) <= Number(vehicle.capacity)){
-      var amount = *quant*Number(warehouse.price);
+    console.log(typeof Number(serviceobj.capacity));
+    if((quant) <= Number(serviceobj.capacity)){
+      console.log(serviceobj);
+      var amount = getDistanceFromLatLonInKm(Number(sourceloc.lat), Number(sourceloc.lng), Number(destloc.lat), Number(destloc.lng))*(serviceobj.price);
       console.log(amount);
       return Order.create({
-        type:"storage",
+        type:"vehicle",
         userobj,
         serviceobj,
         amount
       });
-  }else{
-    res.status(404).send("Warehouse capacity is not enough! Please choose another storage");
-  }
+    }else{
+      res.status(404).send("Transport capacity is not enough! Please choose another transport");
+    }
   })
   .then((order) => {
     res.send(order);
@@ -140,6 +164,24 @@ router.get("/sahayata/transportall/:id", (req,res) => {
     res.status(400).send(err);
   })
 });
+
+function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1);
+  var a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ;
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
 
 
     //
