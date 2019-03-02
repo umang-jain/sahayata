@@ -25,7 +25,7 @@ router.get("/locationOfPlace/:place",(req,res)=> {
 router.get('/search/crop',(req,res) => {
     // var curerntLocation = req.user.location
     var curerntLocation = "12.753,80.1973"
-    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=1000`;
+    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=50`;
     var promises = [];
     var finalArray = [];
     axios({
