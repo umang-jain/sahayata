@@ -20,12 +20,10 @@ router.get("/locationOfPlace/:place",(req,res)=> {
 });
 
 
-
-
 router.get('/search/crop',(req,res) => {
     // var curerntLocation = req.user.location
     var curerntLocation = "12.753,80.1973"
-    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=50`;
+    var url = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001743878f6c84b47ad4f01a21039bbbacb&format=json&offset=1&limit=10`;
     var promises = [];
     var finalArray = [];
     axios({
@@ -48,7 +46,7 @@ router.get('/search/crop',(req,res) => {
               modal_price:record.modal_price
             }
             finalArray.push(finalObj);
-            var url2 = "http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr="+address;
+            var url2 = "http://apis.mapmyindia.com/advancedmaps/v1/92y9r5gi8qijrlncpup4vgtk29486oge/geo_code?addr="+address;
             promises.push(axios.get(url2));
           })
           return promises;
@@ -70,11 +68,11 @@ router.get('/search/crop',(req,res) => {
           var pro = [];
           a.forEach((el) => {
               var add = el.geometry.lat + "," + el.geometry.lng;
-              var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${curerntLocation}&pts=${add}&rtype=0`;
+              var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/92y9r5gi8qijrlncpup4vgtk29486oge/distance?center=${curerntLocation}&pts=${add}&rtype=0`;
               pro.push(axios.get(url3));
           });
           return pro;
-          return axios.get(`https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${curerntLocation}&pts=${addressString}&rtype=0`);
+          return axios.get(`https://apis.mapmyindia.com/advancedmaps/v1/qhzshkcegmgi1qly99uhzhx9x7d72xhs/distance?center=${curerntLocation}&pts=${addressString}&rtype=0`);
         }).then((resp) => {
           var resuArray = Promise.all(resp);
           return resuArray;

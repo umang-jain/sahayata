@@ -54,11 +54,10 @@ router.post('/order/:id/storage/:warehouseid',(req,res) => {
   .then((warehouse) => {
     warehouse.booked = true;
     serviceobj = warehouse;
-    var days = req.body.days;
+    var days = Number(req.body.days);
     var quant = Number(req.body.quantity);
     if((quant/1000) <= Number(warehouse.quantity)){
       var amount = days*quant*Number(warehouse.price);
-      console.log(amount);
       return Order.create({
         type:"storage",
         userobj,
