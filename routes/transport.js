@@ -33,6 +33,7 @@ router.post('/order/:id/transport/:vehicleid',(req,res) => {
     return Vehicle.findById(req.params.vehicleid);
   })
   .then((vehicle) => {
+    vehicle.booked = true;
     serviceobj = vehicle;
     var source = req.body.source.split(' ').join('+').split(',').join('%2C');
     var url = ` http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${source}`;

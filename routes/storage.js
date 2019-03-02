@@ -52,6 +52,7 @@ router.post('/order/:id/storage/:warehouseid',(req,res) => {
     return Warehouse.findById(req.params.warehouseid);
   })
   .then((warehouse) => {
+    warehouse.booked = true;
     serviceobj = warehouse;
     var days = req.body.days;
     var quant = Number(req.body.quantity);

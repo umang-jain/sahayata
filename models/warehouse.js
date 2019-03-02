@@ -6,6 +6,7 @@ var warehouseSchema = new mongoose.Schema({
     quantity : String, // tonnes
     price : String, // per kg
     location:String,
+    booked:Boolean,
     address:String,
     state:String,
     district:String,
