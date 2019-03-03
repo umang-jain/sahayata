@@ -106,7 +106,7 @@ router.get("/sahayata/storageall/:id", (req,res) => {
     var userDistrict = user.district.split(' ').join('+');
     var userState = user.state.split(' ').join('+');
     var add = `${userDistrict}%2C+${userState}`;
-    var url = `http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${add}`
+    var url = `http://apis.mapmyindia.com/advancedmaps/v1/sdjze1h2uq7ifvkhuegwgdofjuctkaso/geo_code?addr=${add}`
     return axios.get(url);
   })
   .then((response) => {
@@ -121,7 +121,7 @@ router.get("/sahayata/storageall/:id", (req,res) => {
       var district = storage.district.split(' ').join('+');
       var state = storage.state.split(' ').join('+');
       var pincode = storage.pincode.split(' ').join('+');
-      var add =` http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${district}%2C+${state}&pin=${pincode}`;
+      var add =` http://apis.mapmyindia.com/advancedmaps/v1/sdjze1h2uq7ifvkhuegwgdofjuctkaso/geo_code?addr=${district}%2C+${state}&pin=${pincode}`;
       promises.push(axios.get(add));
     });
     return promises;
@@ -146,7 +146,7 @@ router.get("/sahayata/storageall/:id", (req,res) => {
     var pro = [];
     a.forEach((el) => {
         var add = el.location.lat + "," + el.location.lng;
-        var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${geometry.lat},${geometry.lng}&pts=${add}&rtype=0 `;
+        var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/sdjze1h2uq7ifvkhuegwgdofjuctkaso/distance?center=${geometry.lat},${geometry.lng}&pts=${add}&rtype=0 `;
         pro.push(axios.get(url3));
     });
     return pro;

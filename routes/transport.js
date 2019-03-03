@@ -39,7 +39,7 @@ router.post('/order/:id/transport/:vehicleid',(req,res) => {
     vehicle.booked = true;
     serviceobj = vehicle;
     var source = req.body.source.split(' ').join('+').split(',').join('%2C');
-    var url = ` http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${source}`;
+    var url = ` http://apis.mapmyindia.com/advancedmaps/v1/tsdrl9hv7vk6pn23h7a5k6s9cewrf9c8/geo_code?addr=${source}`;
     return axios.get(url);
   })
   .then((res) => {
@@ -51,7 +51,7 @@ router.post('/order/:id/transport/:vehicleid',(req,res) => {
       lng
     };
     console.log(sourceloc);
-    var url2 = ` http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${destination}`;
+    var url2 = ` http://apis.mapmyindia.com/advancedmaps/v1/tsdrl9hv7vk6pn23h7a5k6s9cewrf9c8/geo_code?addr=${destination}`;
     return axios.get(url2);
   })
   .then((response) => {
@@ -114,7 +114,7 @@ router.get("/sahayata/transportall/:id", (req,res) => {
     var userDistrict = user.district.split(' ').join('+');
     var userState = user.state.split(' ').join('+');
     var add = `${userDistrict}%2C+${userState}`;
-    var url = `http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${add}`
+    var url = `http://apis.mapmyindia.com/advancedmaps/v1/tsdrl9hv7vk6pn23h7a5k6s9cewrf9c8/geo_code?addr=${add}`
     return axios.get(url);
   })
   .then((response) => {
@@ -128,7 +128,7 @@ router.get("/sahayata/transportall/:id", (req,res) => {
     transportArray.forEach((transport) => {
       var district = transport.district.split(' ').join('+');
       var state = transport.state.split(' ').join('+');
-      var add =` http://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/geo_code?addr=${district}%2C+${state}`;
+      var add =` http://apis.mapmyindia.com/advancedmaps/v1/tsdrl9hv7vk6pn23h7a5k6s9cewrf9c8/geo_code?addr=${district}%2C+${state}`;
       promises.push(axios.get(add));
     });
     return promises;
@@ -153,7 +153,7 @@ router.get("/sahayata/transportall/:id", (req,res) => {
     var pro = [];
     a.forEach((el) => {
         var add = el.location.lat + "," + el.location.lng;
-        var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/xs2v77bxvxu3ev6zxvwywj9tz3yqmqjv/distance?center=${geometry.lat},${geometry.lng}&pts=${add}&rtype=0 `;
+        var url3 = `https://apis.mapmyindia.com/advancedmaps/v1/tsdrl9hv7vk6pn23h7a5k6s9cewrf9c8/distance?center=${geometry.lat},${geometry.lng}&pts=${add}&rtype=0 `;
         pro.push(axios.get(url3));
     });
     return pro;
