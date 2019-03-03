@@ -12,7 +12,8 @@ var farmerRoutes            = require('./routes/farmer'),
     storageRoutes           = require('./routes/storage'),
     transportRoutes         = require('./routes/transport'),
     indexRoutes             = require('./routes/index'),
-    loginRoutes             = require('./routes/login');
+    loginRoutes             = require('./routes/login'),
+    buyerRoutes             = require('./routes/buyer');
 
 var { authenticate }        = require("./middleware/authenticate.js");
 var { mongoose }            = require("./db/mongoose.js");
@@ -33,6 +34,7 @@ app.use(storageRoutes);
 app.use(transportRoutes);
 app.use(indexRoutes);
 app.use(loginRoutes);
+app.use(buyerRoutes);
 
 //----------- PORT ----------------
 

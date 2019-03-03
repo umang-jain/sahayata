@@ -3,7 +3,7 @@ const axios             = require('axios');
 
 var express                 = require("express"),
     router                  = express.Router(),
-    Vehicle                 = require("../models/vehicle");
+    Crop                 = require("../models/crop");
 
 var { User }                    = require("../models/user");
 
@@ -13,5 +13,6 @@ router.get('/sahayata/buyer', (req, res) => {
         }, (err) => {
           res.status(400).send(err);
         });
-      });
 });
+
+module.exports = router;
