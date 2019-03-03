@@ -96,17 +96,5 @@ router.get('/search/crop',(req,res) => {
         });
 });
 
-// ----------- Return orders of a user ---------------
-
-router.get("/sahayata/order/:id",function(req,res){
-  User.findById(req.params.id).populate("orders").exec().then((user) => {
-          if (!user) {
-            return res.status(404).send();
-          }
-          res.send(user.orders);
-      }).catch((e) => {
-        res.status(400).send(e);
-      });
-});
 
 module.exports = router;

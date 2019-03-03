@@ -59,6 +59,7 @@ var express                 = require("express"),
               if (!user) {
                   return res.status(404).send();
               }
+              console.log(user);
               res.send(user.orders);
           }).catch((e) => {
               res.status(400).send();

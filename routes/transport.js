@@ -32,7 +32,6 @@ router.post('/order/:id/transport/:vehicleid',(req,res) => {
   User.findById(req.params.id)
   .then((user) => {
     userobj = user;
-    console.log(user);
     return Vehicle.findById(req.params.vehicleid);
   })
   .then((vehicle) => {
@@ -50,7 +49,6 @@ router.post('/order/:id/transport/:vehicleid',(req,res) => {
       lat,
       lng
     };
-    console.log(sourceloc);
     var url2 = ` http://apis.mapmyindia.com/advancedmaps/v1/tsdrl9hv7vk6pn23h7a5k6s9cewrf9c8/geo_code?addr=${destination}`;
     return axios.get(url2);
   })
