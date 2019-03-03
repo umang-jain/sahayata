@@ -8,6 +8,7 @@ var express                 = require("express"),
 var { User }                    = require("../models/user");
 
 //------------ ADD Vehicle ----------------
+
     router.post('/sahayata/transport/:id', (req,res)=>{
       var body = _.pick(req.body,['type','vehicleNumber','capacity','price']);
       Vehicle.create(body).then(vehicle=>{
@@ -23,6 +24,7 @@ var { User }                    = require("../models/user");
 //----------- BOOK Vehicle ----------------
 
 router.post('/order/:id/transport/:vehicleid',(req,res) => {
+  var order = {};
   var userobj = {};
   var serviceobj = {};
   var sourceloc = {};
@@ -75,7 +77,15 @@ router.post('/order/:id/transport/:vehicleid',(req,res) => {
       res.status(404).send("Transport capacity is not enough! Please choose another transport");
     }
   })
-  .then((order) => {
+  .then((e) => {
+    order = e;
+    return User.findById(req.params.id)
+  })
+  .then((user) => {
+    user.orders.push(order)
+    user.save()
+    console.log(user);
+    console.log(order);
     res.send(order);
   })
   .catch((err) => {

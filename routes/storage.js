@@ -69,7 +69,8 @@ router.post('/order/:id/storage/:warehouseid',(req,res) => {
     res.status(404).send("Warehouse capacity is not enough! Please choose another storage");
   }
   })
-  .then((order) => {
+  .then((e) => {
+    order = e;
     return User.findById(req.params.id)
   })
   .then((user) => {
