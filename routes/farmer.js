@@ -52,6 +52,21 @@ var express                 = require("express"),
       },e=>{console.log("crop not created");return res.status(404).send(e);});
     });
 
+    //----------- past orders -------------
+
+    router.get("/sahayata/farmer/:id/Order",function(req,res){
+          User.findById(req.params.id).populate("orders").exec().then((user) => {
+              if (!user) {
+                  return res.status(404).send();
+              }
+              res.send(user.orders);
+          }).catch((e) => {
+              res.status(400).send();
+          });
+    });
+
+
+
   router.get("/profit",(req,res)=>{
     var cropName = "maize";
     var cropQuantity = 100;//kg
