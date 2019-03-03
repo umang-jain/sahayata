@@ -7,7 +7,7 @@ var express                 = require("express"),
 
 var { User }                    = require("../models/user");
 
-router.get('/sahayata/buyer/', (req, res) => {
+router.get('/sahayata/buyer', (req, res) => {
   Crop.find().then((crops) => {
           res.send(crops);
         }, (err) => {
