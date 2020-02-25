@@ -32,6 +32,8 @@ var express                 = require("express"),
               if (!user) {
                   return res.status(404).send();
               }
+              console.log("GET CROPS");
+              // console.log(user);
               res.send(user.crops);
           }).catch((e) => {
               res.status(400).send();
@@ -46,6 +48,8 @@ var express                 = require("express"),
         User.findById(req.params.id).then(user=>{
           user.crops.push(crop);
           user.save();
+          console.log("CREATED CROP");
+          console.log(crop);
           res.status(200).send(crop);
         },e=>{console.log("user not found");
           return res.status(404).send(e);});
