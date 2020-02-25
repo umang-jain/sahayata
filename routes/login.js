@@ -31,6 +31,7 @@ router.post("/register",(req,res)=>{
       return user.generateAuthToken();
     })
     .then(token => {
+      console.log("CREATED USER");
       res.status(200).send({ token: token, type: user.type });
     })
     .catch(e => {
