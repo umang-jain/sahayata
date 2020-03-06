@@ -39,6 +39,9 @@ router.post("/register",(req,res)=>{
     });
 });
 
+router.get("/test",(req,res) => {
+  res.send("qwerty");
+})
 router.get("/logout", (req, res) => {
   req.user.removeToken(req.token).then(
     () => {
