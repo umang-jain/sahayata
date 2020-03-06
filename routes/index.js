@@ -5,9 +5,6 @@ var fun = require("./getLocation");
 var json  = require("./city.list.json");
 var datajson  = require("./dataCrop.json");
 
-router.get("/",function(req,res){
-   res.render("home");
-});
 
 //--------- GET ALL MARKET PRICES -------------------
 
